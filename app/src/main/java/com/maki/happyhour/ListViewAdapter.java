@@ -4,6 +4,6 @@ import android.content.Context;
 
 public class ListViewAdapter {
     private Context context;
-    private List<News> newsList;
+
 
 }
