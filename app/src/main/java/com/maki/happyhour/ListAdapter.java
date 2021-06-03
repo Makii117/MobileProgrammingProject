@@ -36,6 +36,6 @@ public class ListAdapter extends ArrayAdapter<Catering_Facilities> {
         title.setText(cateringFacilities.facilityName);
         description.setText(cateringFacilities.facilityDescription);
 
-        return super.getView(position, convertView, parent);
+        return convertView;
     }
 }
