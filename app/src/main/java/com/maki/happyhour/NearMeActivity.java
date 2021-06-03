@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.maki.happyhour.databinding.NearmeFragmentBinding;
 
 import java.util.ArrayList;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 
 public class NearMeActivity extends AppCompatActivity {
@@ -35,18 +35,6 @@ public class NearMeActivity extends AppCompatActivity {
             cateringFacilitiesArrayList.add(cateringFacilities);
         }
         ListAdapter listAdapter = new ListAdapter(NearMeActivity.this, cateringFacilitiesArrayList);
-        binding.listview.setAdapter(listAdapter);
-        binding.listview.setClickable(true);
-        binding.listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(NearMeActivity.this, Catering_Facility_Activity.class);
-                i.putExtra("facilityName", facilityName[position]);
-                i.putExtra("facilityDiscription", facilityDescription[position]);
-                i.putExtra("imageId", imageId[position]);
-                startActivity(i);
-            }
-        });
 
     }
 }

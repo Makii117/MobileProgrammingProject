@@ -20,4 +20,5 @@ public class NearMeFragment extends Fragment {
         return inflater.inflate(R.layout.nearme_fragment,container,false);
 
     }
+
 }
