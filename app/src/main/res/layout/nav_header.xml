@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="176dp"
     android:background="@drawable/drawable_gradient"
@@ -8,21 +9,16 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     >
 <ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:src="@mipmap/ic_launcher_round"/>
+    android:layout_width="96dp"
+    android:layout_height="96sp"
+    android:src="@drawable/logo"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="Name Surname"
+        android:text="Happy Hour"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Location"/>
 
 
 </LinearLayout>
