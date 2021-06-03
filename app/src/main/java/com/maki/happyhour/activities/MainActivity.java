@@ -1,20 +1,22 @@
-package com.maki.happyhour;
+package com.maki.happyhour.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.maki.happyhour.R;
+import com.maki.happyhour.fragments.FriendsFragment;
+import com.maki.happyhour.fragments.MapFragment;
+import com.maki.happyhour.fragments.NearMeFragment;
+import com.maki.happyhour.fragments.ProfileFragment;
+import com.maki.happyhour.fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final String EXTRA_IMAGE = "EXTRA_IMAGE";
@@ -47,8 +49,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapFragment()).commit();
                 break;
             case R.id.nav_nearMe:
-               // Intent nearMe = new Intent(this,NearMeFragment.class);
-              //  startActivity(nearMe);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NearMeFragment()).commit();
                 break;
                 case R.id.nav_friends:

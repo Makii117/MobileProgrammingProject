@@ -1,9 +1,11 @@
-package com.maki.happyhour;
+package com.maki.happyhour.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.maki.happyhour.R;
 
 import static java.lang.Thread.sleep;
 
@@ -19,7 +21,7 @@ public class Splash extends AppCompatActivity {
             public void run() {
                 try {
                     sleep(5000);
-                    Intent i = new Intent(Splash.this,LoginFragment.class);
+                    Intent i = new Intent(Splash.this, LoginFragment.class);
                     startActivity(i);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

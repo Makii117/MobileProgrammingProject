@@ -1,4 +1,4 @@
-package com.maki.happyhour;
+package com.maki.happyhour.activities;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
@@ -15,6 +15,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
+import com.maki.happyhour.R;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 

@@ -1,15 +1,11 @@
-package com.maki.happyhour;
+package com.maki.happyhour.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import com.maki.happyhour.R;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import static java.lang.Thread.sleep;
 
@@ -26,7 +22,7 @@ public class LoginFragment extends AppCompatActivity {
             public void run() {
                 try {
                     sleep(5000);
-                    Intent i = new Intent(LoginFragment.this,MainActivity.class);
+                    Intent i = new Intent(LoginFragment.this, MainActivity.class);
                     startActivity(i);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

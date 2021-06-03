@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.maki.happyhour.activities.MainActivity;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class NearMeListDetails extends AppCompatActivity {

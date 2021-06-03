@@ -17,10 +17,10 @@
         <activity android:name=".Intents" />
         <activity android:name=".NearMeActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
-        <activity android:name=".LoginFragment"
+        <activity android:name=".activities.LoginFragment"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             />
-        <activity android:name=".MainActivity"
+        <activity android:name=".activities.MainActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             />
         <!--
@@ -32,11 +32,11 @@
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <activity
-            android:name=".MapActivity"
+            android:name=".activities.MapActivity"
             android:label="@string/title_activity_map"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
         <activity
-            android:name=".Splash"
+            android:name=".activities.Splash"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,7 +47,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
+            android:value="AIzaSyAffUX2JPIY1Qg2GOJ0WMc0XtvWYPpT0l4" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />

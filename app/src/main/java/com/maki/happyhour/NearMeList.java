@@ -1,6 +1,6 @@
 package com.maki.happyhour;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +11,12 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.maki.happyhour.MainActivity.EXTRA_DESCRIPTION;
-import static com.maki.happyhour.MainActivity.EXTRA_IMAGE;
-import static com.maki.happyhour.MainActivity.EXTRA_TITLE;
+import static com.maki.happyhour.activities.MainActivity.EXTRA_DESCRIPTION;
+import static com.maki.happyhour.activities.MainActivity.EXTRA_IMAGE;
+import static com.maki.happyhour.activities.MainActivity.EXTRA_TITLE;
 
 
-public class NearMeList extends AppCompatActivity {
+public class NearMeList extends FragmentActivity {
     private ListView listView;
 
     @Override
