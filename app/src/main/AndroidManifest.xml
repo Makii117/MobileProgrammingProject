@@ -13,8 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HappyHour">
-        <activity android:name=".Catering_Facility_Activity"></activity>
-        <activity android:name=".ListView" />
+        <activity android:name=".NearMeList"></activity>
+        <activity android:name=".NearMeListDetails" />
         <activity android:name=".Intents" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -39,7 +39,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="${MAPS_API_KEY}" />
     </application>
 
 </manifest>

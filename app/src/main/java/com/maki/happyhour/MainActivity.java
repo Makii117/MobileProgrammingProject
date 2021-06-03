@@ -14,6 +14,9 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    public static final String EXTRA_IMAGE = "EXTRA_IMAGE";
+    public static final String EXTRA_TITLE = "EXTRA_TITLE";
+    public static final String EXTRA_DESCRIPTION = "EXTRA_DESCRIPTION";
     private DrawerLayout drawer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
