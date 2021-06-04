@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "990487649813",
+    "project_id": "inbound-theory-315418",
+    "storage_bucket": "inbound-theory-315418.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990487649813:android:5bae927f886bd03f40381c",
+        "android_client_info": {
+          "package_name": "com.maki.happyhour"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "990487649813-3ne25jtfpd8ev1s4lcq1jbchg5h4s94p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjhUWv-VTtI42V8O6BiMhTmsmP0ec3swk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "990487649813-3ne25jtfpd8ev1s4lcq1jbchg5h4s94p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
