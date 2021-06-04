@@ -9,7 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HappyHour">
-        <activity android:name=".NearMeList"></activity>
         <activity android:name=".NearMeListDetails" />
         <activity android:name=".Profile"></activity>
         <activity android:name=".Catering_Facility_Activity" />
