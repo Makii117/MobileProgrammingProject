@@ -10,14 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HappyHour">
         <activity android:name=".activities.RegisterActivity"></activity>
-        <activity android:name=".NearMeListDetails" />
         <activity android:name=".Profile" />
-        <activity android:name=".Catering_Facility_Activity" />
-        <activity android:name=".ListView" />
-        <activity android:name=".Intents" />
-        <activity
-            android:name=".NearMeActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+
         <activity
             android:name=".activities.LoginFragment"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
