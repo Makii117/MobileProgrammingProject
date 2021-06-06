@@ -47,7 +47,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
+
     }
+
     public void onClick(View view){
         switch(view.getId()){
             case R.id.sarajevo_map:
@@ -55,7 +57,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 mMap.clear();
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(sarajevo));
                 break;
-            case R.id.location_search:
+            case R.id.current_location:
                 //get current location
                 getLocation();
                 break;
