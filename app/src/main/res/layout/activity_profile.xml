@@ -19,11 +19,11 @@
                 android:layout_height="250dp"
                 android:src="@drawable/d"/>
             <TextView
+                android:id="@+id/name_surname"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mahmut Besirevic"
                 android:textColor="#fff"
                 android:textStyle="bold"
                 android:textSize="21sp"/>
@@ -49,11 +49,12 @@
                 android:src="@drawable/d" />
 
             <TextView
+                android:id="@+id/user_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="20dp"
-                android:text="Maki@gmail.com"
+                android:text="Mail"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -69,12 +70,12 @@
                 android:src="@drawable/d"/>
             <TextView
                 android:textStyle="bold"
-
+                android:id="@+id/phone_num"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
-                android:text="+123 456 789"/>
+                android:text="Phone"/>
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="25dp"
@@ -88,13 +89,15 @@
                 android:src="@drawable/d"/>
             <TextView
                 android:textStyle="bold"
-
+                android:id="@+id/last_loc"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:text="Last known location"/>
+
         </LinearLayout>
+
     </LinearLayout>
 
     <Button
