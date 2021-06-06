@@ -9,9 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HappyHour">
-        <activity android:name=".activities.RegisterActivity"></activity>
+        <activity
+            android:name=".activities.LoginActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity android:name=".activities.RegisterActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            />
         <activity android:name=".Profile" />
-
         <activity
             android:name=".activities.LoginFragment"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
@@ -44,9 +48,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAffUX2JPIY1Qg2GOJ0WMc0XtvWYPpT0l4" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 </manifest>

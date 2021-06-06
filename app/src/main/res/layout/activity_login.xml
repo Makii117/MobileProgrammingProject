@@ -38,11 +38,13 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
-                android:hint="Username">
+                android:hint="Email">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:id="@+id/login_email"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -50,11 +52,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+
                 android:hint="Password">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:id="@+id/login_pass"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -95,14 +101,17 @@
             android:layout_height="wrap_content"
             >
 
-            <TextView
+            <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:text="SIGNIN"
                 android:textColor="#fff"
-                android:textSize="22dp" />
+                android:id="@+id/sign_in"
+                android:textSize="22dp"
+                android:background="@null"
+                />
 
         </RelativeLayout>
     </LinearLayout>
@@ -125,6 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" Signup"
+            android:id="@+id/have_acc"
             android:textColor="#3F51B5" />
 
     </LinearLayout>

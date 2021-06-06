@@ -30,6 +30,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        btn = findViewById(R.id.have_acc);
+
         inputUsername = findViewById(R.id.input_user);
         inputEmail = findViewById(R.id.input_email);
         inputPassword = findViewById(R.id.input_pass);
@@ -61,9 +63,9 @@ public class RegisterActivity extends AppCompatActivity {
             } else if (email.isEmpty() || !email.contains("@")) {
                 showError(inputEmail, "Invalid email");
             } else if (password.isEmpty() || password.length()<7) {
-                showError(inputPassword, "Invalid email");
+                showError(inputPassword, "Invalid password");
             } else if (confirmPass.isEmpty() || !confirmPass.equals(password)) {
-                showError(inputConfirmPassword, "Invalid email");
+                showError(inputConfirmPassword, "Passwords must match");
             } else {
                 mLoadingBar.setTitle("Register Successful");
                 mLoadingBar.setMessage("Checking credentials, please wait");
@@ -76,6 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(RegisterActivity.this, "Registered Successful", Toast.LENGTH_SHORT).show();
+                            mLoadingBar.dismiss();
                             Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
