@@ -33,22 +33,31 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="52dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        tools:context=".mapactivity" />
+        tools:context=".activities.MapActivity" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageButton
-            android:id="@+id/restaurants_nearby"
+            android:id="@+id/sarajevo_map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:layout_marginLeft="100dp"
+            android:layout_marginLeft="45dp"
+            android:onClick="onClick"
+            android:src="@mipmap/restaurant"/>
+
+        <ImageButton
+            android:id="@+id/restaurants_nearby"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@id/sarajevo_map"
             android:onClick="onClick"
             android:src="@mipmap/restaurant"/>
         <ImageButton
@@ -65,6 +74,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@id/cafes_nearby"
+            android:onClick="onClick"
+            android:src="@mipmap/restaurant"/>
+        <ImageButton
+            android:id="@+id/current_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@id/pubs_nearby"
             android:onClick="onClick"
             android:src="@mipmap/restaurant"/>
     </RelativeLayout>
