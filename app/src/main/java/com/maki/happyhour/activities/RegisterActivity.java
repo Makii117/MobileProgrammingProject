@@ -20,7 +20,7 @@ import com.maki.happyhour.R;
 
 public class RegisterActivity extends AppCompatActivity {
     TextView btn;
-    private EditText inputUsername,inputEmail,inputPassword,inputConfirmPassword;
+    private EditText inputUsername,inputEmail,inputPassword,inputConfirmPassword,inputName;
     Button btnRegister;
     private FirebaseAuth mAuth;
     private ProgressDialog mLoadingBar;
@@ -32,11 +32,11 @@ public class RegisterActivity extends AppCompatActivity {
 
         btn = findViewById(R.id.have_acc);
 
-        inputUsername = findViewById(R.id.input_user);
+
         inputEmail = findViewById(R.id.input_email);
         inputPassword = findViewById(R.id.input_pass);
         inputConfirmPassword = findViewById(R.id.input_confirm_pass);
-
+        inputName=findViewById(R.id.input_name);
         mAuth = FirebaseAuth.getInstance();
         mLoadingBar = new ProgressDialog(RegisterActivity.this);
 
@@ -52,14 +52,14 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
         private void checkCredentials() {
-            String username = inputUsername.getText().toString();
+            String name = inputName.getText().toString();
             String email = inputEmail.getText().toString();
             String password = inputPassword.getText().toString();
             String confirmPass = inputConfirmPassword.getText().toString();
 
 
-            if (username.isEmpty()) {
-                showError(inputUsername, "Invalid username");
+            if (name.isEmpty()) {
+                showError(inputName, "Cant be empty");
             } else if (email.isEmpty() || !email.contains("@")) {
                 showError(inputEmail, "Invalid email");
             } else if (password.isEmpty() || password.length()<7) {

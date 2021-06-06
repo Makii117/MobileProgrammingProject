@@ -14,7 +14,7 @@ import com.maki.happyhour.R;
 import static java.lang.Thread.sleep;
 
 public class Splash extends AppCompatActivity {
-
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,7 @@ public class Splash extends AppCompatActivity {
             public void run() {
                 try {
                     sleep(3000);
-                    if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+                    if(user==null){
                         Intent i = new Intent(Splash.this, LoginFragment.class);
                         startActivity(i);
                     }else {

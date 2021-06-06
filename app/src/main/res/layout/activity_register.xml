@@ -11,17 +11,23 @@
         android:id="@+id/cardView"
         android:layout_width="350dp"
         android:layout_height="290dp"
-        app:cardElevation="20dp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.37">
+        app:layout_constraintVertical_bias="0.37"
+        android:backgroundTint="@android:color/transparent"
+
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:backgroundTint="@android:color/transparent"
+            android:elevation="0dp"
+            >
 
             <TextView
                 android:layout_width="match_parent"
@@ -30,6 +36,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
                 android:text="Signup"
+
                 android:textSize="25sp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -38,10 +45,10 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
-                android:hint="Username">
+                android:hint="Name">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_user"
+                    android:id="@+id/input_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -56,7 +63,9 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_email"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -102,6 +111,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+
         app:layout_constraintTop_toBottomOf="@+id/cardView">
 
 
@@ -124,6 +134,8 @@
                 android:textColor="#fff"
                 android:textSize="22dp"
                 android:id="@+id/btn_register"
+                android:backgroundTint="@android:color/transparent"
+                android:elevation="0dp"
                 />
 
         </RelativeLayout>
@@ -148,7 +160,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" SignIn"
+            android:text=" Sign In"
             android:textColor="#3F51B5" />
 
     </LinearLayout>
