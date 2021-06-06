@@ -33,7 +33,7 @@ public class LoginFragment extends AppCompatActivity {
                 login.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent login = new Intent(LoginFragment.this, MainActivity.class);
+                        Intent login = new Intent(LoginFragment.this, LoginActivity.class);
                         startActivity(login);
                     }
                 });
