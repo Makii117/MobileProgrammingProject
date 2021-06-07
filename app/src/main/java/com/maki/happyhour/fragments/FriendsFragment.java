@@ -14,11 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class FriendsFragment extends Fragment {
-
     private RecyclerView friendList;
     String online_user_id;
     private View mainView;
-
+    //all users
     public FriendsFragment(){
 
     }
@@ -27,7 +26,6 @@ public class FriendsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        mainView= inflater.inflate(R.layout.friends_fragment,container,false);
 
         friendList = (RecyclerView) mainView.findViewById(R.id.friends_list);
 
@@ -38,6 +36,8 @@ public class FriendsFragment extends Fragment {
 
         return mainView;
     }
+
+
 
     @Override
     public void onStart() {

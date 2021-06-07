@@ -14,7 +14,7 @@
             android:title="Near Me"/>
         <item android:id="@+id/nav_friends"
             android:icon="@drawable/ic_baseline_people_24"
-            android:title="Friends"/>
+            android:title="All users"/>
         <item android:id="@+id/nav_profile"
             android:icon="@drawable/ic_baseline_person_24"
             android:title="Profile"/>
