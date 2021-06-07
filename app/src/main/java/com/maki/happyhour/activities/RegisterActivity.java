@@ -47,6 +47,14 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btn_register);
 
 
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+
+            }
+        });
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

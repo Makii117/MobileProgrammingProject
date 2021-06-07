@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.maki.happyhour.R;
 import com.maki.happyhour.fragments.FriendsFragment;
 import com.maki.happyhour.fragments.MapFragment;
@@ -19,6 +20,7 @@ import com.maki.happyhour.fragments.ProfileFragment;
 import com.maki.happyhour.fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     public static final String EXTRA_IMAGE = "EXTRA_IMAGE";
     public static final String EXTRA_TITLE = "EXTRA_TITLE";
     public static final String EXTRA_DESCRIPTION = "EXTRA_DESCRIPTION";

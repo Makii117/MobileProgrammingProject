@@ -60,7 +60,7 @@ public class MapFragment extends Fragment implements View.OnClickListener {
     private GoogleMap mMap;
     MapView mMapView;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-    float zoomLevel = 16.0f;
+    float zoomLevel = 15.0f;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,10 +75,12 @@ public class MapFragment extends Fragment implements View.OnClickListener {
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
 
-                // Add a marker in Sydney and move the camera
                 LatLng sarajevo = new LatLng(43.8563, 18.4131);
+
                 mMap.addMarker(new MarkerOptions().position(sarajevo).title("Marker in Sarajevo"));
+
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sarajevo,zoomLevel));
+
                     googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                         @Override
                         public void onMapClick(LatLng latLng) {
