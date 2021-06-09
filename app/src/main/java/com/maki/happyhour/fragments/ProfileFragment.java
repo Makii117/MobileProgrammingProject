@@ -2,9 +2,13 @@ package com.maki.happyhour.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.icu.util.ULocale;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,22 +24,30 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.maki.happyhour.R;
 import com.maki.happyhour.activities.LoginActivity;
 import com.maki.happyhour.activities.MainActivity;
+import com.maki.happyhour.models.UserLocation;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import static android.content.ContentValues.TAG;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
     StorageReference storageRef;
@@ -76,10 +88,38 @@ profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             mail=(TextView)view.findViewById(R.id.user_email);
             mail.setText(email);
             location=(TextView)view.findViewById(R.id.last_loc);
-            location.setText("Last Location");
             userImg=(ImageView)view.findViewById(R.id.user_img);
 
         }
+
+        Geocoder geocoder = new Geocoder(getActivity());
+        DocumentReference docRef=db.collection("users").document(mAuth.getCurrentUser().getUid());
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                UserLocation loc=documentSnapshot.toObject(UserLocation.class);
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(UserLocation.getLat(), UserLocation.getLon(), 1);
+
+                    if (addresses.size() > 0) {
+                        Address fetchedAddress = addresses.get(0);
+                        StringBuilder strAddress = new StringBuilder();
+                        for (int z = 0; z < fetchedAddress.getMaxAddressLineIndex(); z++) {
+                            strAddress.append(fetchedAddress.getAddressLine(z)).append(" ");
+                        }
+                        location.setText(strAddress);
+
+                    } else {
+                        Toast.makeText(getActivity(), "Searching", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(), "Error, couldn't get location", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
 
         return view;

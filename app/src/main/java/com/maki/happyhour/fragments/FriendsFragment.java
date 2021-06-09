@@ -1,5 +1,7 @@
 package com.maki.happyhour.fragments;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -16,9 +19,13 @@ import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.maki.happyhour.R;
+import com.maki.happyhour.activities.MainActivity;
 import com.maki.happyhour.models.UserModel;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +45,7 @@ public class FriendsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.friendslist,container,false);
         storageRef = FirebaseStorage.getInstance().getReference();
-
+        Geocoder geocoder = new Geocoder(getActivity(), Locale.ENGLISH);
 
         firebaseFirestore=FirebaseFirestore.getInstance();
         friendList=mainView.findViewById(R.id.friends_list);
@@ -56,8 +63,29 @@ public class FriendsFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull RecyclerViewHolder userViewModel, int i, @NonNull UserModel userModel) {
               userViewModel.list_name.setText(userModel.getName());
-              userViewModel.location_name.setText(userModel.getLocation());
-              userViewModel.profile_pic.setImageURI(Uri.parse(userModel.getPicture()));
+
+              Geocoder geocoder = new Geocoder(getActivity());
+                    try {
+                        List<Address> addresses = geocoder.getFromLocation(userModel.getLat(), userModel.getLon(), 1);
+
+                        if (addresses.size() > 0) {
+                            Address fetchedAddress = addresses.get(0);
+                            StringBuilder strAddress = new StringBuilder();
+                            for (int z = 0; z < fetchedAddress.getMaxAddressLineIndex(); z++) {
+                                strAddress.append(fetchedAddress.getAddressLine(z)).append(" ");
+                            }
+                            userViewModel.location_name.setText(strAddress.toString());
+
+                        } else {
+                            Toast.makeText(getActivity(), "Searching", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getActivity(), "Error, couldn't get location", Toast.LENGTH_SHORT).show();
+                    }
+
+              Picasso.get().load(Uri.parse(userModel.getPicture())).into(userViewModel.profile_pic);
             }
 
 
@@ -69,9 +97,6 @@ public class FriendsFragment extends Fragment {
                 return new RecyclerViewHolder(view);
             }
         };
-
-
-
 
 
         friendList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -105,4 +130,6 @@ public class FriendsFragment extends Fragment {
         super.onStop();
         adapter.stopListening();
     }
+
+
 }
