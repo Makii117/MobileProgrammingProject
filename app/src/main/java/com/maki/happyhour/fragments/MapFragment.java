@@ -34,7 +34,7 @@ public class MapFragment extends Fragment
         implements OnMapReadyCallback,
         OnMyLocationButtonClickListener,
         OnMyLocationClickListener,
-        OnClickListener {
+        View.OnClickListener {
 
     private GoogleMap mMap;
     SupportMapFragment mapFrag;
@@ -50,11 +50,11 @@ public class MapFragment extends Fragment
         mapFrag = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
         setUpMapIfNeeded();
         restaurant = (ImageButton) rootView.findViewById(R.id.restaurants_nearby);
-        restaurant.setOnClickListener((OnClickListener) getActivity());
+        restaurant.setOnClickListener(this);
         cafes = (ImageButton) rootView.findViewById(R.id.cafes_nearby);
-        cafes.setOnClickListener((OnClickListener) getActivity());
+        cafes.setOnClickListener(this);
         pubs = (ImageButton) rootView.findViewById(R.id.pubs_nearby);
-        pubs.setOnClickListener((OnClickListener) getActivity());
+        pubs.setOnClickListener(this);
         return rootView;
     }
 
