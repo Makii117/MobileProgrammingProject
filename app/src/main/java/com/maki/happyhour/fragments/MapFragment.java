@@ -38,6 +38,7 @@ public class MapFragment extends SupportMapFragment
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     Marker mCurrLocationMarker;
+    float zoomLevel = 15.0f;
 
     @Override
     public void onResume() {
@@ -58,7 +59,7 @@ public class MapFragment extends SupportMapFragment
 
         //stop location updates when Activity is no longer active
         if (mGoogleApiClient != null) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, (com.google.android.gms.location.LocationListener) this);
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
     }
 
@@ -69,9 +70,7 @@ public class MapFragment extends SupportMapFragment
 
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 //Location Permission already granted
                 buildGoogleApiClient();
                 mMap.setMyLocationEnabled(true);
@@ -104,7 +103,7 @@ public class MapFragment extends SupportMapFragment
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, (com.google.android.gms.location.LocationListener) getActivity());
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
     }
 
@@ -127,11 +126,12 @@ public class MapFragment extends SupportMapFragment
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-        mCurrLocationMarker = mMap.addMarker(markerOptions);
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        mCurrLocationMarker = mMap.addMarker(new MarkerOptions().position(latLng));
 
         //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,zoomLevel));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
 
     }
 

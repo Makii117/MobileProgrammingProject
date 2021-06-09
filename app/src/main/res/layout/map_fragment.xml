@@ -43,22 +43,15 @@
         android:layout_height="wrap_content">
 
         <ImageButton
-            android:id="@+id/sarajevo_map"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="45dp"
-            android:src="@mipmap/restaurant"
-            android:onClick="onClick"/>
-
-        <ImageButton
             android:id="@+id/restaurants_nearby"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@id/sarajevo_map"
-            android:src="@mipmap/restaurant"/>
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="100dp"
+            android:src="@mipmap/restaurant"
+            android:onClick="onClick"/>
+
         <ImageButton
             android:id="@+id/cafes_nearby"
             android:layout_width="wrap_content"
@@ -73,14 +66,6 @@
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@id/cafes_nearby"
             android:src="@mipmap/restaurant"/>
-        <ImageButton
-            android:id="@+id/current_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@id/pubs_nearby"
-            android:src="@mipmap/restaurant"
-            android:onClick="onClick"/>
     </RelativeLayout>
 
 
