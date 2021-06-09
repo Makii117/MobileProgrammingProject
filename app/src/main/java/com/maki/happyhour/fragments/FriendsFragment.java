@@ -1,5 +1,6 @@
 package com.maki.happyhour.fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +33,6 @@ public class FriendsFragment extends Fragment {
     private FirestoreRecyclerAdapter adapter;
     private View mainView;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class FriendsFragment extends Fragment {
             protected void onBindViewHolder(@NonNull RecyclerViewHolder userViewModel, int i, @NonNull UserModel userModel) {
               userViewModel.list_name.setText(userModel.getName());
               userViewModel.location_name.setText(userModel.getLocation());
-              userViewModel.profile_pic.setImageURI(userModel.getImgUri());
+              userViewModel.profile_pic.setImageURI(Uri.parse(userModel.getPicture()));
             }
 
 
