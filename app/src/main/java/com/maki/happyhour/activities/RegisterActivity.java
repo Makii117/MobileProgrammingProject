@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.StorageReference;
 import com.maki.happyhour.R;
 
 import java.util.HashMap;
@@ -122,7 +123,8 @@ public class RegisterActivity extends AppCompatActivity {
                                                 Map<String, Object> user = new HashMap<>();
                                                 user.put("Name",name);
                                                 user.put("Location","N/A");
-                                                user.put("Picture","Placeholder");
+                                                user.put("Picture","gs://inbound-theory-315418.appspot.com/users/"+mAuth.getCurrentUser().getUid()+"/profile.jpg");
+
 
                                                 documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override

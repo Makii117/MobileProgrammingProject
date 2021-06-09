@@ -62,25 +62,7 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_marginTop="25dp"
-            android:orientation="horizontal"
-            android:paddingLeft="25dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="46dp"
-                android:layout_height="46dp"
-                android:src="@android:drawable/stat_sys_phone_call"/>
-            <TextView
-                android:textStyle="bold"
-                android:id="@+id/phone_num"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:text="Phone"/>
-        </LinearLayout>
+
         <LinearLayout
             android:layout_marginTop="25dp"
             android:orientation="horizontal"

@@ -75,8 +75,6 @@ profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             name.setText(Uname);
             mail=(TextView)view.findViewById(R.id.user_email);
             mail.setText(email);
-            phone=(TextView)view.findViewById(R.id.phone_num);
-            phone.setText(Uphone);
             location=(TextView)view.findViewById(R.id.last_loc);
             location.setText("Last Location");
             userImg=(ImageView)view.findViewById(R.id.user_img);

@@ -61,7 +61,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
                 break;
             case R.id.nav_share:
+
                 Toast.makeText(this, "Shared location", Toast.LENGTH_SHORT).show();
+
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
