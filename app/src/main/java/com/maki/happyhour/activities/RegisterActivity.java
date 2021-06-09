@@ -15,12 +15,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.maki.happyhour.R;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 public class RegisterActivity extends AppCompatActivity {
     TextView btn;
@@ -28,6 +37,8 @@ public class RegisterActivity extends AppCompatActivity {
     Button btnRegister;
     private FirebaseAuth mAuth;
     private ProgressDialog mLoadingBar;
+    private FirebaseFirestore mDB;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +52,10 @@ public class RegisterActivity extends AppCompatActivity {
         inputPassword = findViewById(R.id.input_pass);
         inputConfirmPassword = findViewById(R.id.input_confirm_pass);
         inputName=findViewById(R.id.input_name);
+
         mAuth = FirebaseAuth.getInstance();
+        mDB = FirebaseFirestore.getInstance();
+
         mLoadingBar = new ProgressDialog(RegisterActivity.this);
 
         btnRegister = findViewById(R.id.btn_register);
@@ -103,6 +117,21 @@ public class RegisterActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
+                                                userID = mAuth.getCurrentUser().getUid();
+                                                DocumentReference documentReference = mDB.collection("users").document(userID);
+                                                Map<String, Object> user = new HashMap<>();
+                                                user.put("Name",name);
+                                                user.put("Location","N/A");
+                                                user.put("Picture","Placeholder");
+
+                                                documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Log.d(TAG,"Successfully registered");
+                                                    }
+                                                });
+
+
                                                 Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 startActivity(intent);

@@ -29,6 +29,9 @@ import com.maki.happyhour.activities.LoginActivity;
 import com.maki.happyhour.activities.MainActivity;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
