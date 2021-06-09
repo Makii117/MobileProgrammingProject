@@ -47,6 +47,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     ImageView userImg;
     @Nullable
     @Override
+
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_profile,container,false);
         Button sign_out=(Button) view.findViewById(R.id.sign_out);
