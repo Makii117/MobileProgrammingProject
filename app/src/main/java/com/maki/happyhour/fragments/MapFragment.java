@@ -34,7 +34,7 @@ public class MapFragment extends Fragment
         implements OnMapReadyCallback,
         OnMyLocationButtonClickListener,
         OnMyLocationClickListener,
-        View.OnClickListener {
+        OnClickListener {
 
     private GoogleMap mMap;
     SupportMapFragment mapFrag;
@@ -42,38 +42,38 @@ public class MapFragment extends Fragment
     private boolean permissionDenied = false;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private double latitude, longitude;
-    private int ProximityRadius = 50000;
+    private final int ProximityRadius = 1000;
     ImageButton restaurant, cafes, pubs;
 
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.map_fragment, container, false);
         mapFrag = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
         setUpMapIfNeeded();
-        restaurant = (ImageButton) rootView.findViewById(R.id.restaurants_nearby);
+        restaurant = rootView.findViewById(R.id.restaurants_nearby);
         restaurant.setOnClickListener(this);
-        cafes = (ImageButton) rootView.findViewById(R.id.cafes_nearby);
+        cafes = rootView.findViewById(R.id.cafes_nearby);
         cafes.setOnClickListener(this);
-        pubs = (ImageButton) rootView.findViewById(R.id.pubs_nearby);
+        pubs = rootView.findViewById(R.id.pubs_nearby);
         pubs.setOnClickListener(this);
         return rootView;
     }
 
     private String getUrl(double latitude, double longitude, String nearbyPlace){
         StringBuilder googleURL= new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-        googleURL.append("location=" + latitude + "," + longitude);
+        googleURL.append("location=" + 43.849852 + "," + 18.369287);
         googleURL.append("&radius=" + ProximityRadius);
         googleURL.append("&type=" + nearbyPlace);
         googleURL.append("&sensor=true");
-        googleURL.append("&key=" + "AIzaSyAffUX2JPIY1Qg2GOJ0WMc0XtvWYPpT0l4");
+        googleURL.append("&key=" + "AIzaSyDoGoLDEXZ61j99cH-lHkEv-ItxkRCN_YM");
 
-        Log.d("GoogleMapsActivity","url = "+googleURL.toString());
+        Log.d("GoogleMapsActivity","url = " + googleURL.toString());
 
         return googleURL.toString();
     }
 
     public void onClick(View v){
         String restaurants = "restaurant", cafes = "cafes", pubs = "pubs";
-        Object transferData[] = new Object[2];
+        Object[] transferData = new Object[2];
         GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
         switch(v.getId()){
             case R.id.restaurants_nearby:
@@ -96,7 +96,7 @@ public class MapFragment extends Fragment
                 break;
             case R.id.pubs_nearby:
                 mMap.clear();
-                url = getUrl(latitude, longitude, restaurants);
+                url = getUrl(latitude, longitude, pubs);
                 transferData[0] = mMap;
                 transferData[1] = url;
                 getNearbyPlaces.execute(transferData);
