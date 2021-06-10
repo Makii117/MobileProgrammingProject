@@ -103,11 +103,13 @@ profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
 
                     if (addresses.size() > 0) {
                         Address fetchedAddress = addresses.get(0);
+
                         StringBuilder strAddress = new StringBuilder();
-                        for (int z = 0; z < fetchedAddress.getMaxAddressLineIndex(); z++) {
-                            strAddress.append(fetchedAddress.getAddressLine(z)).append(" ");
-                        }
+                        strAddress.append(fetchedAddress.getAddressLine(0));
+
+
                         location.setText(strAddress);
+
 
                     } else {
                         Toast.makeText(getActivity(), "Searching", Toast.LENGTH_SHORT).show();

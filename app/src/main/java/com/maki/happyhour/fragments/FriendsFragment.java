@@ -4,6 +4,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,19 +63,25 @@ public class FriendsFragment extends Fragment {
         adapter = new FirestoreRecyclerAdapter<UserModel,RecyclerViewHolder>(options){
             @Override
             protected void onBindViewHolder(@NonNull RecyclerViewHolder userViewModel, int i, @NonNull UserModel userModel) {
+
               userViewModel.list_name.setText(userModel.getName());
+
+              userViewModel.profile_pic.setImageURI(Uri.parse(userModel.getPicture()));
+              Log.d("URi",userModel.getPicture());
 
               Geocoder geocoder = new Geocoder(getActivity());
                     try {
                         List<Address> addresses = geocoder.getFromLocation(userModel.getLat(), userModel.getLon(), 1);
-
+                        Log.d("ADRESSES", String.valueOf(addresses));
                         if (addresses.size() > 0) {
                             Address fetchedAddress = addresses.get(0);
+
+                            Log.d("ADDR_1", String.valueOf(fetchedAddress));
+
                             StringBuilder strAddress = new StringBuilder();
-                            for (int z = 0; z < fetchedAddress.getMaxAddressLineIndex(); z++) {
-                                strAddress.append(fetchedAddress.getAddressLine(z)).append(" ");
-                            }
-                            userViewModel.location_name.setText(strAddress.toString());
+                            strAddress.append(fetchedAddress.getAddressLine(0));
+
+                            userViewModel.location_name.setText(strAddress);
 
                         } else {
                             Toast.makeText(getActivity(), "Searching", Toast.LENGTH_SHORT).show();
@@ -85,7 +92,7 @@ public class FriendsFragment extends Fragment {
                         Toast.makeText(getActivity(), "Error, couldn't get location", Toast.LENGTH_SHORT).show();
                     }
 
-              Picasso.get().load(Uri.parse(userModel.getPicture())).into(userViewModel.profile_pic);
+
             }
 
 

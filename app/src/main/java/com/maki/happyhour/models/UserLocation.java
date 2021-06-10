@@ -43,4 +43,11 @@ public class UserLocation {
         this.Name = name;
     }
 
+    public void setPicture(String Picture) {
+        this.Picture = Picture;
+    }
+
+    public String getPicture() {
+        return Picture;
+    }
 }
