@@ -69,13 +69,19 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mAuth=FirebaseAuth.getInstance();
         storageRef = FirebaseStorage.getInstance().getReference();
 
+        //get profile pic
         StorageReference profileRef = storageRef.child("users/"+mAuth.getCurrentUser().getUid()+"/profile.jpg");
 profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
     @Override
     public void onSuccess(Uri uri) {
          Picasso.get().load(uri).into(userImg);
+
+
     }
 });
+
+
+
         if (user != null) {
             // Name, email address, and profile photo Url
             String Uname = user.getDisplayName();
@@ -93,32 +99,47 @@ profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
         }
 
         Geocoder geocoder = new Geocoder(getActivity());
+
         DocumentReference docRef=db.collection("users").document(mAuth.getCurrentUser().getUid());
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                UserLocation loc=documentSnapshot.toObject(UserLocation.class);
-                try {
-                    List<Address> addresses = geocoder.getFromLocation(UserLocation.getLat(), UserLocation.getLon(), 1);
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document=task.getResult();
+                    if(document.exists()){
+                        Log.d("Val Of dOc", String.valueOf(document.getData()));
+                        UserLocation loc=document.toObject(UserLocation.class);
+                        Log.d("LocationValue", String.valueOf(loc.getLat())+" "+String.valueOf(loc.getLon()));
+                        try {
+                            List<Address> addresses = geocoder.getFromLocation(loc.getLat(), loc.getLon(), 1);
 
-                    if (addresses.size() > 0) {
-                        Address fetchedAddress = addresses.get(0);
+                            if (addresses.size() > 0) {
+                                Address fetchedAddress = addresses.get(0);
 
-                        StringBuilder strAddress = new StringBuilder();
-                        strAddress.append(fetchedAddress.getAddressLine(0));
+                                StringBuilder strAddress = new StringBuilder();
+                                strAddress.append(fetchedAddress.getAddressLine(0));
+
+                                location.setText(strAddress);
 
 
-                        location.setText(strAddress);
+                            } else {
+                                Toast.makeText(getActivity(), "Searching", Toast.LENGTH_SHORT).show();
+                            }
 
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getActivity(), "Error, couldn't get location", Toast.LENGTH_SHORT).show();
+                        }
 
-                    } else {
-                        Toast.makeText(getActivity(), "Searching", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Log.d("ERRORTAG", "NO DOC");
+
                     }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getActivity(), "Error, couldn't get location", Toast.LENGTH_SHORT).show();
+            }else{
+                    Log.d("FAiled", String.valueOf(task.getException()));
                 }
+
+
             }
         });
 
@@ -172,6 +193,15 @@ profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                  @Override
                  public void onSuccess(Uri uri) {
                      Picasso.get().load(uri).into(userImg);
+                     DocumentReference userPic = db.collection("users").document(mAuth.getCurrentUser().getUid());
+                     Map<String,Object> pic = new HashMap<>();
+                     pic.put("Picture",String.valueOf(uri));
+                     userPic.update(pic).addOnSuccessListener(new OnSuccessListener<Void>() {
+                         @Override
+                         public void onSuccess(Void aVoid) {
+                             Log.d("Image","Image updated");
+                         }
+                     });
                  }
              });
 

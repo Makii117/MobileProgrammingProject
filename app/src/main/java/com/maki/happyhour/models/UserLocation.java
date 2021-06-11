@@ -1,8 +1,8 @@
 package com.maki.happyhour.models;
 
 public class UserLocation {
-    private static double lon;
-    private static double lat;
+    private double lon;
+    private double lat;
     private String Name;
     private String Picture;
 
@@ -31,11 +31,11 @@ public class UserLocation {
         this.lon = lon;
     }
 
-    public static double getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public static double getLon() {
+    public double getLon() {
         return lon;
     }
 

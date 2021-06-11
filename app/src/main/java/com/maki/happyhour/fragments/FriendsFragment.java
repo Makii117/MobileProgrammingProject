@@ -9,11 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.auth.User;
@@ -35,21 +38,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class FriendsFragment extends Fragment {
-    StorageReference storageRef;
     private FirebaseFirestore firebaseFirestore;
     private RecyclerView friendList;
     private FirestoreRecyclerAdapter adapter;
     private View mainView;
 
+    FirebaseStorage storage;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.friendslist,container,false);
-        storageRef = FirebaseStorage.getInstance().getReference();
         Geocoder geocoder = new Geocoder(getActivity(), Locale.ENGLISH);
 
         firebaseFirestore=FirebaseFirestore.getInstance();
         friendList=mainView.findViewById(R.id.friends_list);
+
+
+
+
+
 
         //Query
         Query query =firebaseFirestore.collection("users");
@@ -66,9 +73,15 @@ public class FriendsFragment extends Fragment {
 
               userViewModel.list_name.setText(userModel.getName());
 
-              userViewModel.profile_pic.setImageURI(Uri.parse(userModel.getPicture()));
-              Log.d("URi",userModel.getPicture());
+              //get image from firebase storage
+                Glide.with(getActivity()).load(userModel.getPicture()).into(userViewModel.profile_pic);
 
+
+
+                Log.d("GLIDE_URI",userModel.getPicture());
+
+
+                //get address
               Geocoder geocoder = new Geocoder(getActivity());
                     try {
                         List<Address> addresses = geocoder.getFromLocation(userModel.getLat(), userModel.getLon(), 1);
@@ -91,6 +104,15 @@ public class FriendsFragment extends Fragment {
                         e.printStackTrace();
                         Toast.makeText(getActivity(), "Error, couldn't get location", Toast.LENGTH_SHORT).show();
                     }
+
+
+                    //ping users
+                userViewModel.relativeLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(getActivity(), "Pinged user", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
             }
@@ -116,6 +138,7 @@ public class FriendsFragment extends Fragment {
         private TextView list_name;
         private TextView location_name;
         private ImageView profile_pic;
+        private RelativeLayout relativeLayout;
 
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -123,6 +146,7 @@ public class FriendsFragment extends Fragment {
             list_name=itemView.findViewById(R.id.username);
             location_name=itemView.findViewById(R.id.last_location);
             profile_pic=itemView.findViewById(R.id.profile_image);
+            relativeLayout=itemView.findViewById(R.id.user_item);
         }
     }
 
