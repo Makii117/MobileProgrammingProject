@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -74,7 +75,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
     @Override
     public void onSuccess(Uri uri) {
-         Picasso.get().load(uri).into(userImg);
+Picasso.get().load(uri).into(userImg);
 
 
     }

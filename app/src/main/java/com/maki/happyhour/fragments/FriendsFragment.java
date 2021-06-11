@@ -72,9 +72,16 @@ public class FriendsFragment extends Fragment {
             protected void onBindViewHolder(@NonNull RecyclerViewHolder userViewModel, int i, @NonNull UserModel userModel) {
 
               userViewModel.list_name.setText(userModel.getName());
-
+                Log.d("IMGVAL1", String.valueOf(userModel.getPicture()));
               //get image from firebase storage
-                Glide.with(getActivity()).load(userModel.getPicture()).into(userViewModel.profile_pic);
+                if(String.valueOf(userModel.getPicture()).equals("Placeholder")){
+                    Glide.with(getActivity()).load(R.drawable.logohappyhour).into(userViewModel.profile_pic);
+                }else{
+
+                    Glide.with(getActivity()).load(userModel.getPicture()).into(userViewModel.profile_pic);
+
+                }
+
 
 
 
