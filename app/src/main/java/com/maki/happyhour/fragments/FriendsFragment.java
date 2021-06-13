@@ -54,12 +54,12 @@ public class FriendsFragment extends Fragment {
     private FirestoreRecyclerAdapter adapter;
     private View mainView;
     FirebaseAuth mAuth;
-
+    private static final String SUBSCRIBE_TO = "userABC";
     final protected String FCM_API = "https://fcm.googleapis.com/fcm/send";
     final protected String serverKey = "key=" + "AAAA5p2qHhU:APA91bHuPVoulSKI5IOQGGMRwD96kfmgR--FgeM1A61Sfjw8YJJjLVMprGgB_AACQw1S-R369m-Sfjhr2eiDBNL0UWMe9HMGKV69L26JLBkNvqdmBpfpapgh9ItaLBrZeHehui1tnjwj\t\n";
     final protected String contentType = "application/json";
     final String TAG = "NOTIFICATION TAG";
-
+    String token;
     String NOTIFICATION_TITLE;
     String NOTIFICATION_MESSAGE;
     String TOPIC;
@@ -81,15 +81,16 @@ public class FriendsFragment extends Fragment {
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "Fetching FCM registration token failed", task.getException());
                             return;
+                        }else {
+                            // Get new FCM registration token
+                            String token = task.getResult();
+                            Log.d(TAG, token);
+
                         }
-
-                        // Get new FCM registration token
-                        String token = task.getResult();
-
                         // Log and toast
                     }
                 });
-
+        FirebaseMessaging.getInstance().subscribeToTopic(SUBSCRIBE_TO);
         //Query
         Query query =firebaseFirestore.collection("users");
 
