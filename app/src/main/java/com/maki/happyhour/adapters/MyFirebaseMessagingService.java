@@ -11,11 +11,13 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.maki.happyhour.R;
-import com.maki.happyhour.activities.MainActivity;
+import com.maki.happyhour.fragments.FriendsFragment;
 
 import java.util.Random;
 
@@ -23,10 +25,21 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 public final class MyFirebaseMessagingService extends FirebaseMessagingService {
+    private static final String TAG = "mFirebaseIIDService";
+    private static final String SUBSCRIBE_TO = "userABC";
     private final String ADMIN_CHANNEL_ID ="admin_channel";
+
+
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+        Log.d("NEW_TOKEN",s);
+        FirebaseMessaging.getInstance().subscribeToTopic(SUBSCRIBE_TO);
+    }
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        final Intent intent = new Intent(this, MainActivity.class);
+        final Intent intent = new Intent(this, FriendsFragment.class);
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         int notificationID = new Random().nextInt(3000);
 

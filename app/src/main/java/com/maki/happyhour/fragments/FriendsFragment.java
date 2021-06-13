@@ -51,12 +51,14 @@ public class FriendsFragment extends Fragment {
     private View mainView;
 
 
-    final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
-    final private String serverKey = "key=" + "AAAA5p2qHhU:APA91bHuPVoulSKI5IOQGGMRwD96kfmgR--FgeM1A61Sfjw8YJJjLVMprGgB_AACQw1S-R369m-Sfjhr2eiDBNL0UWMe9HMGKV69L26JLBkNvqdmBpfpapgh9ItaLBrZeHehui1tnjwj\t\n";
-    final private String contentType = "application/json";
+    final protected String FCM_API = "https://fcm.googleapis.com/fcm/send";
+    final protected String serverKey = "key=" + "AAAA5p2qHhU:APA91bHuPVoulSKI5IOQGGMRwD96kfmgR--FgeM1A61Sfjw8YJJjLVMprGgB_AACQw1S-R369m-Sfjhr2eiDBNL0UWMe9HMGKV69L26JLBkNvqdmBpfpapgh9ItaLBrZeHehui1tnjwj\t\n";
+    final protected String contentType = "application/json";
     final String TAG = "NOTIFICATION TAG";
 
-
+    String NOTIFICATION_TITLE;
+    String NOTIFICATION_MESSAGE;
+    String TOPIC;
 
     FirebaseStorage storage;
     @Nullable
@@ -132,16 +134,16 @@ public class FriendsFragment extends Fragment {
                 userViewModel.relativeLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String NOTIFICATION_TITLE;
-                        String NOTIFICATION_MESSAGE;
-                        String TOPIC;
+
 
                         TOPIC = "/topics/userABC"; //topic must match with what the receiver subscribed to
-                        NOTIFICATION_TITLE = userModel.getName();
+                        NOTIFICATION_TITLE = String.valueOf(userModel.getName());
                         NOTIFICATION_MESSAGE = "PINGED YOU";
 
                         JSONObject notification = new JSONObject();
                         JSONObject notificationBody = new JSONObject();
+                        Log.d("JSONBOI", String.valueOf(notificationBody));
+                        Log.d("JSONBOI1", String.valueOf(notification));
 
                         try {
                             notificationBody.put("title", NOTIFICATION_TITLE);
@@ -213,6 +215,7 @@ public class FriendsFragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        Log.i(TAG, "onResponse: " + response.toString());
 
                     }
                 },
