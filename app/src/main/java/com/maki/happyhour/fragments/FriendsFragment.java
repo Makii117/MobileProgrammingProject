@@ -11,13 +11,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.firebase.messaging.*;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import com.google.firebase.storage.FirebaseStorage;
 import com.maki.happyhour.R;
 import com.maki.happyhour.models.UserModel;
@@ -44,9 +49,6 @@ public class FriendsFragment extends Fragment {
     final private String contentType = "application/json";
     final String TAG = "NOTIFICATION TAG";
     String token;
-    String NOTIFICATION_TITLE;
-    String NOTIFICATION_MESSAGE;
-    String TOPIC;
     FirebaseStorage storage;
     @Nullable
     @Override
@@ -84,7 +86,7 @@ public class FriendsFragment extends Fragment {
 
 
 
-                Log.d("USER_ID", String.valueOf(i));
+
 
 
                 //get address
@@ -112,20 +114,60 @@ public class FriendsFragment extends Fragment {
                     }
 
 
+
+
+
+
+
                     //ping users
                 userViewModel.relativeLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        FirebaseMessaging.getInstance().getToken()
+                                .addOnCompleteListener(new OnCompleteListener<String>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<String> task) {
+                                        if (!task.isSuccessful()) {
+                                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                                            return;
+                                        }
+                                        // Get new FCM registration token
+                                        token = task.getResult();
+                                    }
+                                });
 
+                        FirebaseMessaging.getInstance().subscribeToTopic(userModel.getId())
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                        if (!task.isSuccessful()) {
+                                            Log.d("subtotop", "ERR");
+                                        }
+
+                                    }
+                                });
+                        String topic = userModel.getId();
+
+                        // See documentation on defining a message payload.
+                        RemoteMessage message = new RemoteMessage.Builder(userModel.getId()).addData("Name",mAuth.getCurrentUser().getDisplayName()).addData("message","pinged you").build();
+
+
+
+
+                        // Send a message to the devices subscribed to the provided topic.
+                        String response;
+                        FirebaseMessaging.getInstance().send(message);
+                        // Response is a message ID string.
 
                         Toast.makeText(getActivity(), "Pinged user", Toast.LENGTH_SHORT).show();
 
 
 
+
+
+
                     }
-
-
-
                 });
 
 

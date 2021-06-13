@@ -1,13 +1,5 @@
 package com.maki.happyhour.models;
 
-import android.location.Geocoder;
-import android.net.Uri;
-
-import com.squareup.picasso.Picasso;
-
-import java.lang.reflect.Array;
-import java.util.Locale;
-
 public class UserModel {
 
     private String Name;
@@ -15,13 +7,15 @@ public class UserModel {
     private String Picture;
     private double lat;
     private double lon;
+    private String id;
     private UserModel(){}
-    private UserModel(String Name,String Picture,double lat, double lon,String Location){
+    private UserModel(String Name,String Picture,double lat, double lon,String Location,String id){
         this.Name=Name;
         this.lat=lat;
         this.lon=lon;
         this.Picture=Picture;
         this.Location=Location;
+        this.id=id;
     }
 
 
@@ -63,6 +57,10 @@ public class UserModel {
         return Picture;
     }
 
-
-
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getId() {
+        return id;
+    }
 }

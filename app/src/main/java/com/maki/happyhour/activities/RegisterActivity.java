@@ -122,7 +122,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                 user.put("Name",name);
                                                 user.put("Location","N/A");
                                                 user.put("Picture","gs://inbound-theory-315418.appspot.com/users/"+mAuth.getCurrentUser().getUid()+"/profile.jpg");
-
+                                                user.put("id",mAuth.getCurrentUser().getUid());
 
                                                 documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
