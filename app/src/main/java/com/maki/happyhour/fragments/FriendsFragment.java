@@ -87,9 +87,6 @@ public class FriendsFragment extends Fragment {
                         String token = task.getResult();
 
                         // Log and toast
-                        String msg = getString(Integer.parseInt(token));
-                        Log.d(TAG, msg);
-                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
