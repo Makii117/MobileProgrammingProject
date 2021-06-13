@@ -1,8 +1,8 @@
 package com.maki.happyhour.fragments;
 
+import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,23 +13,30 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.maki.happyhour.R;
-import com.maki.happyhour.activities.MainActivity;
 import com.maki.happyhour.models.UserModel;
-import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +49,14 @@ public class FriendsFragment extends Fragment {
     private RecyclerView friendList;
     private FirestoreRecyclerAdapter adapter;
     private View mainView;
+
+
+    final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
+    final private String serverKey = "key=" + "AAAA5p2qHhU:APA91bHuPVoulSKI5IOQGGMRwD96kfmgR--FgeM1A61Sfjw8YJJjLVMprGgB_AACQw1S-R369m-Sfjhr2eiDBNL0UWMe9HMGKV69L26JLBkNvqdmBpfpapgh9ItaLBrZeHehui1tnjwj\t\n";
+    final private String contentType = "application/json";
+    final String TAG = "NOTIFICATION TAG";
+
+
 
     FirebaseStorage storage;
     @Nullable
@@ -117,6 +132,30 @@ public class FriendsFragment extends Fragment {
                 userViewModel.relativeLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        String NOTIFICATION_TITLE;
+                        String NOTIFICATION_MESSAGE;
+                        String TOPIC;
+
+                        TOPIC = "/topics/userABC"; //topic must match with what the receiver subscribed to
+                        NOTIFICATION_TITLE = userModel.getName();
+                        NOTIFICATION_MESSAGE = "PINGED YOU";
+
+                        JSONObject notification = new JSONObject();
+                        JSONObject notificationBody = new JSONObject();
+
+                        try {
+                            notificationBody.put("title", NOTIFICATION_TITLE);
+                            notificationBody.put("message", NOTIFICATION_MESSAGE);
+
+                            notification.put("to", TOPIC);
+                            notification.put("data", notificationBody);
+                        } catch (JSONException e) {
+                            Log.e(TAG, "onCreate: " + e.getMessage() );
+                        }
+                        sendNotification(notification);
+
+
+
                         Toast.makeText(getActivity(), "Pinged user", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -145,7 +184,7 @@ public class FriendsFragment extends Fragment {
         private TextView list_name;
         private TextView location_name;
         private ImageView profile_pic;
-        private RelativeLayout relativeLayout;
+        protected RelativeLayout relativeLayout;
 
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -169,5 +208,61 @@ public class FriendsFragment extends Fragment {
         adapter.stopListening();
     }
 
+    private void sendNotification(JSONObject notification) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), "Request error", Toast.LENGTH_LONG).show();
+                        Log.i(TAG, "onErrorResponse: Didn't work");
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", serverKey);
+                params.put("Content-Type", contentType);
+                return params;
+            }
+        };
+        MySingleton.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
+    }
+
+    public static class MySingleton {
+        private  static MySingleton instance;
+        private RequestQueue requestQueue;
+        private Context ctx;
+
+        private MySingleton(Context context) {
+            ctx = context;
+            requestQueue = getRequestQueue();
+        }
+
+        public static synchronized MySingleton getInstance(Context context) {
+            if (instance == null) {
+                instance = new MySingleton(context);
+            }
+            return instance;
+        }
+
+        public RequestQueue getRequestQueue() {
+            if (requestQueue == null) {
+                // getApplicationContext() is key, it keeps you from leaking the
+                // Activity or BroadcastReceiver if someone passes one in.
+                requestQueue = Volley.newRequestQueue(ctx.getApplicationContext());
+            }
+            return requestQueue;
+        }
+
+        public <T> void addToRequestQueue(Request<T> req) {
+            getRequestQueue().add(req);
+        }
+    }
 
 }

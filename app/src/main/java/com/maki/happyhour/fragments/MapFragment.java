@@ -62,7 +62,7 @@ public class MapFragment extends Fragment
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private double latitude, longitude;
     private final int ProximityRadius = 1000;
-    ImageButton restaurant, cafes, pubs;
+    ImageButton restaurant, cafes, pubs,clear;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth;
     private double lat;
@@ -83,7 +83,8 @@ public class MapFragment extends Fragment
         pubs.setOnClickListener(this);
         search_address = rootView.findViewById(R.id.search_address);
         search_address.setOnClickListener(this);
-
+        clear = rootView.findViewById(R.id.clear_markers);
+        clear.setOnClickListener(this);
         DocumentReference docRef=db.collection("users").document(mAuth.getCurrentUser().getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -177,7 +178,6 @@ public class MapFragment extends Fragment
                 transferData[0] = mMap;
                 transferData[1] = url;
                 getNearbyPlaces.execute(transferData);
-                Toast.makeText(getActivity(), "Searching for nearby restaurants", Toast.LENGTH_SHORT).show();
                 Toast.makeText(getActivity(), "Showing nearby restaurants", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.cafes_nearby:
@@ -186,7 +186,6 @@ public class MapFragment extends Fragment
                 transferData[0] = mMap;
                 transferData[1] = url;
                 getNearbyPlaces.execute(transferData);
-                Toast.makeText(getActivity(), "Searching for nearby cafes", Toast.LENGTH_SHORT).show();
                 Toast.makeText(getActivity(), "Showing nearby cafes", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.pubs_nearby:
@@ -195,8 +194,11 @@ public class MapFragment extends Fragment
                 transferData[0] = mMap;
                 transferData[1] = url;
                 getNearbyPlaces.execute(transferData);
-                Toast.makeText(getActivity(), "Searching for nearby pubs", Toast.LENGTH_SHORT).show();
                 Toast.makeText(getActivity(), "Showing nearby pubs", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.clear_markers:
+                mMap.clear();
+                Toast.makeText(getActivity(), "Cleared markers", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

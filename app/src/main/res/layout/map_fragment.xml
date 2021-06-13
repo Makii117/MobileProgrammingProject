@@ -78,7 +78,7 @@
             android:background="@null"/>
 
         <ImageButton
-            android:id="@+id/clear"
+            android:id="@+id/clear_markers"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_alignParentBottom="true"
