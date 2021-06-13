@@ -11,8 +11,8 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -21,47 +21,41 @@ import com.maki.happyhour.fragments.FriendsFragment;
 
 import java.util.Random;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
-public final class MyFirebaseMessagingService extends FirebaseMessagingService {
-    private static final String TAG = "mFirebaseIIDService";
-    private static final String SUBSCRIBE_TO = "userABC";
-    private final String ADMIN_CHANNEL_ID ="admin_channel";
+public class MyFirebaseMessagingService extends FirebaseMessagingService {
+    FirebaseAuth mAuth;
 
-
+    private final String ADMIN_CHANNEL_ID = "admin_channel";
 
     @Override
-    public void onNewToken(String s) {
+    public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
-        Log.d("NEW_TOKEN",s);
-        FirebaseMessaging.getInstance().subscribeToTopic(SUBSCRIBE_TO);
-
-
+        mAuth=FirebaseAuth.getInstance();
+        FirebaseMessaging.getInstance().subscribeToTopic(mAuth.getCurrentUser().getDisplayName());
     }
+
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         final Intent intent = new Intent(this, FriendsFragment.class);
-        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         int notificationID = new Random().nextInt(3000);
-
-      /*
-        Apps targeting SDK 26 or above (Android O) must implement notification channels and add its notifications
-        to at least one of them. Therefore, confirm if version is Oreo or higher, then setup notification channel
-      */
+   /*
+    Apps targeting SDK 26 or above (Android O) must
+    implement notification channels and add their notifications to at least one of them. Therefore, confirm if the version is Oreo or higher, then setup notification channel
+   */
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             setupChannels(notificationManager);
         }
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this , 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(),
-                R.drawable.logohappyhour);
-
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.logohappyhour);
         Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
                 .setSmallIcon(R.drawable.logohappyhour)
                 .setLargeIcon(largeIcon)
@@ -71,17 +65,17 @@ public final class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setSound(notificationSoundUri)
                 .setContentIntent(pendingIntent);
 
-        //Set notification color to match your app color template
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+        // Set notification color to match your app color template
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             notificationBuilder.setColor(getResources().getColor(R.color.colorPrimaryDark));
         }
         notificationManager.notify(notificationID, notificationBuilder.build());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void setupChannels(NotificationManager notificationManager){
+    private void setupChannels(NotificationManager notificationManager) {
         CharSequence adminChannelName = "New notification";
-        String adminChannelDescription = "Device to device notification";
+        String adminChannelDescription = "Device to device notification ";
 
         NotificationChannel adminChannel;
         adminChannel = new NotificationChannel(ADMIN_CHANNEL_ID, adminChannelName, NotificationManager.IMPORTANCE_HIGH);
@@ -89,10 +83,9 @@ public final class MyFirebaseMessagingService extends FirebaseMessagingService {
         adminChannel.enableLights(true);
         adminChannel.setLightColor(Color.RED);
         adminChannel.enableVibration(true);
+
         if (notificationManager != null) {
             notificationManager.createNotificationChannel(adminChannel);
         }
     }
-
-
 }

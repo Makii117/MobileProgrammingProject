@@ -23,12 +23,9 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.maki.happyhour.R;
 import com.maki.happyhour.models.UserModel;
@@ -54,16 +51,15 @@ public class FriendsFragment extends Fragment {
     private FirestoreRecyclerAdapter adapter;
     private View mainView;
     FirebaseAuth mAuth;
-    private static final String SUBSCRIBE_TO = "userABC";
-    final protected String FCM_API = "https://fcm.googleapis.com/fcm/send";
-    final protected String serverKey = "key=" + "AAAA5p2qHhU:APA91bHuPVoulSKI5IOQGGMRwD96kfmgR--FgeM1A61Sfjw8YJJjLVMprGgB_AACQw1S-R369m-Sfjhr2eiDBNL0UWMe9HMGKV69L26JLBkNvqdmBpfpapgh9ItaLBrZeHehui1tnjwj\t\n";
-    final protected String contentType = "application/json";
+
+    final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
+    final private String serverKey = "key=" + "AAAA5p2qHhU:APA91bHuPVoulSKI5IOQGGMRwD96kfmgR--FgeM1A61Sfjw8YJJjLVMprGgB_AACQw1S-R369m-Sfjhr2eiDBNL0UWMe9HMGKV69L26JLBkNvqdmBpfpapgh9ItaLBrZeHehui1tnjwj";
+    final private String contentType = "application/json";
     final String TAG = "NOTIFICATION TAG";
     String token;
     String NOTIFICATION_TITLE;
     String NOTIFICATION_MESSAGE;
     String TOPIC;
-
     FirebaseStorage storage;
     @Nullable
     @Override
@@ -74,23 +70,6 @@ public class FriendsFragment extends Fragment {
         firebaseFirestore=FirebaseFirestore.getInstance();
         friendList=mainView.findViewById(R.id.friends_list);
 
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
-                            return;
-                        }else {
-                            // Get new FCM registration token
-                            String token = task.getResult();
-                            Log.d(TAG, token);
-
-                        }
-                        // Log and toast
-                    }
-                });
-        FirebaseMessaging.getInstance().subscribeToTopic(SUBSCRIBE_TO);
         //Query
         Query query =firebaseFirestore.collection("users");
 
@@ -151,11 +130,10 @@ public class FriendsFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
 
-
-                        TOPIC = "/topics/userABC"; //topic must match with what the receiver subscribed to
+                        TOPIC = "/topics/" +userModel.getName(); //topic must match with what the receiver subscribed to
                         NOTIFICATION_TITLE = String.valueOf(mAuth.getCurrentUser().getDisplayName());
                         NOTIFICATION_MESSAGE = "Pinged you";
-
+                        Log.d("STRINGUSER", String.valueOf(userModel));
                         JSONObject notification = new JSONObject();
                         JSONObject notificationBody = new JSONObject();
 
@@ -175,8 +153,7 @@ public class FriendsFragment extends Fragment {
 
 
 
-                        Toast.makeText(getActivity(), "Pinged user", Toast.LENGTH_SHORT).show();
-                    }
+                            }
                 });
 
 
@@ -233,6 +210,7 @@ public class FriendsFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.i(TAG, "onResponse: " + response.toString());
+                        Toast.makeText(getActivity(), "Pinged user", Toast.LENGTH_SHORT).show();
 
                     }
                 },
