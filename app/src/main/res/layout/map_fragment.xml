@@ -10,6 +10,7 @@
         android:layout_height="wrap_content">
 
         <EditText
+            android:layout_margin="10dp"
             android:id="@+id/location_search"
             android:layout_width="314dp"
             android:layout_height="50dp"
@@ -25,7 +26,9 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:onClick="onClick"
-            android:src="@mipmap/search"/>
+            android:src="@mipmap/search"
+            android:background="@null"
+            />
 
     </RelativeLayout>
 
@@ -45,30 +48,46 @@
 
         <ImageButton
             android:id="@+id/restaurants_nearby"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:layout_marginLeft="100dp"
-            android:src="@mipmap/restaurant"
-            android:onClick="onClick"/>
+            android:src="@mipmap/dish"
+            android:onClick="onClick"
+            android:background="@null"/>
 
         <ImageButton
             android:id="@+id/cafes_nearby"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@id/restaurants_nearby"
             android:onClick="onClick"
-            android:src="@mipmap/restaurant"/>
+            android:src="@mipmap/coffee"
+            android:background="@null"
+            />
         <ImageButton
             android:id="@+id/pubs_nearby"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@id/cafes_nearby"
             android:onClick="onClick"
-            android:src="@mipmap/restaurant"/>
+            android:src="@mipmap/beer"
+            android:background="@null"/>
+
+        <ImageButton
+            android:id="@+id/clear"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="70dp"
+            android:onClick="onClick"
+            android:layout_toRightOf="@id/pubs_nearby"
+            android:src="@mipmap/delete"
+            android:background="@null"
+            />
     </RelativeLayout>
 
     //test
