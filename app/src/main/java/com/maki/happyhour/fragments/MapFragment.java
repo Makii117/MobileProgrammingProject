@@ -4,14 +4,18 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,11 +27,15 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,6 +67,7 @@ public class MapFragment extends Fragment
     FirebaseAuth mAuth;
     private double lat;
     private double lon;
+    ImageView search_address;
 
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.map_fragment, container, false);
@@ -72,6 +81,8 @@ public class MapFragment extends Fragment
         cafes.setOnClickListener(this);
         pubs = rootView.findViewById(R.id.pubs_nearby);
         pubs.setOnClickListener(this);
+        search_address = rootView.findViewById(R.id.search_address);
+        search_address.setOnClickListener(this);
 
         DocumentReference docRef=db.collection("users").document(mAuth.getCurrentUser().getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -124,6 +135,42 @@ public class MapFragment extends Fragment
         Object[] transferData = new Object[2];
         GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
         switch(v.getId()){
+            case R.id.search_address:
+                EditText addressfield = getView().findViewById(R.id.location_search);
+                String address = addressfield.getText().toString();
+
+                List<Address> addressList = null;
+
+                MarkerOptions userMarkerOptions = new MarkerOptions();
+
+                if (!TextUtils.isEmpty(address)) {
+                    Geocoder geocoder = new Geocoder(getActivity());
+                    try {
+                        addressList = geocoder.getFromLocationName(address, 6);
+
+                        if (addressList != null) {
+                            for (int i = 0; i < addressList.size(); i++) {
+                                Address userAddress = addressList.get(i);
+                                LatLng latLng = new LatLng(userAddress.getLatitude(), userAddress.getLongitude());
+
+                                userMarkerOptions.position(latLng);
+                                userMarkerOptions.title(address);
+                                userMarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+                                mMap.addMarker(userMarkerOptions);
+
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                                mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+                            }
+                        } else {
+                            Toast.makeText(getActivity(), "Location not found", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Please write location name...", Toast.LENGTH_SHORT).show();
+                }
+                break;
             case R.id.restaurants_nearby:
                 mMap.clear();
                 String url = getUrl(latitude, longitude, restaurants);
