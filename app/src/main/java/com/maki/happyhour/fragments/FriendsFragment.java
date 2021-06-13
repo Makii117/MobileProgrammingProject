@@ -1,6 +1,5 @@
 package com.maki.happyhour.fragments;
 
-import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -13,13 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -30,14 +22,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.maki.happyhour.R;
 import com.maki.happyhour.models.UserModel;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -84,7 +71,7 @@ public class FriendsFragment extends Fragment {
             protected void onBindViewHolder(@NonNull RecyclerViewHolder userViewModel, int i, @NonNull UserModel userModel) {
 
               userViewModel.list_name.setText(userModel.getName());
-                Log.d("IMGVAL1", String.valueOf(userModel.getPicture()));
+
               //get image from firebase storage
                 if(String.valueOf(userModel.getPicture()).equals("Placeholder")){
                     Glide.with(getActivity()).load(R.drawable.logohappyhour).into(userViewModel.profile_pic);
@@ -97,7 +84,7 @@ public class FriendsFragment extends Fragment {
 
 
 
-                Log.d("GLIDE_URI",userModel.getPicture());
+                Log.d("USER_ID", String.valueOf(i));
 
 
                 //get address
@@ -130,30 +117,15 @@ public class FriendsFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
 
-                        TOPIC = "/topics/" +userModel.getName(); //topic must match with what the receiver subscribed to
-                        NOTIFICATION_TITLE = String.valueOf(mAuth.getCurrentUser().getDisplayName());
-                        NOTIFICATION_MESSAGE = "Pinged you";
-                        Log.d("STRINGUSER", String.valueOf(userModel));
-                        JSONObject notification = new JSONObject();
-                        JSONObject notificationBody = new JSONObject();
 
-
-                        try {
-                            notificationBody.put("title", NOTIFICATION_TITLE);
-                            notificationBody.put("message", NOTIFICATION_MESSAGE);
-
-                            notification.put("to", TOPIC);
-                            notification.put("data", notificationBody);
-                            Log.d("JSONBOI", String.valueOf(notificationBody));
-                            Log.d("JSONBOI1", String.valueOf(notification));
-                        } catch (JSONException e) {
-                            Log.e(TAG, "onCreate: " + e.getMessage() );
-                        }
-                        sendNotification(notification);
+                        Toast.makeText(getActivity(), "Pinged user", Toast.LENGTH_SHORT).show();
 
 
 
-                            }
+                    }
+
+
+
                 });
 
 
@@ -202,65 +174,6 @@ public class FriendsFragment extends Fragment {
     public void onStop() {
         super.onStop();
         adapter.stopListening();
-    }
-
-    private void sendNotification(JSONObject notification) {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.i(TAG, "onResponse: " + response.toString());
-                        Toast.makeText(getActivity(), "Pinged user", Toast.LENGTH_SHORT).show();
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), "Request error", Toast.LENGTH_LONG).show();
-                        Log.i(TAG, "onErrorResponse: Didn't work");
-                    }
-                }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("Authorization", serverKey);
-                params.put("Content-Type", contentType);
-                return params;
-            }
-        };
-        MySingleton.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
-    }
-
-    public static class MySingleton {
-        private  static MySingleton instance;
-        private RequestQueue requestQueue;
-        private Context ctx;
-
-        private MySingleton(Context context) {
-            ctx = context;
-            requestQueue = getRequestQueue();
-        }
-
-        public static synchronized MySingleton getInstance(Context context) {
-            if (instance == null) {
-                instance = new MySingleton(context);
-            }
-            return instance;
-        }
-
-        public RequestQueue getRequestQueue() {
-            if (requestQueue == null) {
-                // getApplicationContext() is key, it keeps you from leaking the
-                // Activity or BroadcastReceiver if someone passes one in.
-                requestQueue = Volley.newRequestQueue(ctx.getApplicationContext());
-            }
-            return requestQueue;
-        }
-
-        public <T> void addToRequestQueue(Request<T> req) {
-            getRequestQueue().add(req);
-        }
     }
 
 }
