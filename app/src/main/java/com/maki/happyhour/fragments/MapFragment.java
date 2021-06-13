@@ -3,6 +3,7 @@ package com.maki.happyhour.fragments;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,8 +28,18 @@ import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.maki.happyhour.R;
 import com.maki.happyhour.googlePlaceAPI.GetNearbyPlaces;
+import com.maki.happyhour.models.UserLocation;
+
+import java.io.IOException;
+import java.util.List;
 
 public class MapFragment extends Fragment
         implements OnMapReadyCallback,
@@ -44,9 +55,15 @@ public class MapFragment extends Fragment
     private double latitude, longitude;
     private final int ProximityRadius = 1000;
     ImageButton restaurant, cafes, pubs;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth mAuth;
+    private double lat;
+    private double lon;
 
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.map_fragment, container, false);
+        mAuth=FirebaseAuth.getInstance();
+
         mapFrag = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
         setUpMapIfNeeded();
         restaurant = rootView.findViewById(R.id.restaurants_nearby);
@@ -55,24 +72,55 @@ public class MapFragment extends Fragment
         cafes.setOnClickListener(this);
         pubs = rootView.findViewById(R.id.pubs_nearby);
         pubs.setOnClickListener(this);
+
+        DocumentReference docRef=db.collection("users").document(mAuth.getCurrentUser().getUid());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document=task.getResult();
+                    if(document.exists()){
+                        Log.d("Val Of dOc", String.valueOf(document.getData()));
+                        UserLocation loc=document.toObject(UserLocation.class);
+                        Log.d("LocationValue", String.valueOf(loc.getLat())+" "+String.valueOf(loc.getLon()));
+                        lat=loc.getLat();
+                        lon=loc.getLon();
+                    }else {
+                        Log.d("ERRORTAG", "NO DOC");
+                    }
+                }else{
+                    Log.d("FAiled", String.valueOf(task.getException()));
+                }
+
+
+            }
+        });
+
+
+
         return rootView;
+
+
+
     }
 
+
+
     private String getUrl(double latitude, double longitude, String nearbyPlace){
+
         StringBuilder googleURL= new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-        googleURL.append("location=" + 43.849852 + "," + 18.369287);
+        googleURL.append("location=" + lat + "," + lon);
         googleURL.append("&radius=" + ProximityRadius);
         googleURL.append("&type=" + nearbyPlace);
         googleURL.append("&sensor=true");
         googleURL.append("&key=" + "AIzaSyDoGoLDEXZ61j99cH-lHkEv-ItxkRCN_YM");
-
         Log.d("GoogleMapsActivity","url = " + googleURL.toString());
 
         return googleURL.toString();
     }
 
     public void onClick(View v){
-        String restaurants = "restaurant", cafes = "cafes", pubs = "pubs";
+        String restaurants = "restaurant", cafes = "cafe", pubs = "bar";
         Object[] transferData = new Object[2];
         GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
         switch(v.getId()){
