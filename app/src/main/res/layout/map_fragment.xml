@@ -71,5 +71,6 @@
             android:src="@mipmap/restaurant"/>
     </RelativeLayout>
 
+    //test
 
 </RelativeLayout>

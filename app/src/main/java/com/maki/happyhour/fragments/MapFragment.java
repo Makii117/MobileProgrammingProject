@@ -155,11 +155,11 @@ public class MapFragment extends Fragment
 
                                 userMarkerOptions.position(latLng);
                                 userMarkerOptions.title(address);
-                                userMarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+                                userMarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                                 mMap.addMarker(userMarkerOptions);
 
                                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                                mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+                                mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
                             }
                         } else {
                             Toast.makeText(getActivity(), "Location not found", Toast.LENGTH_SHORT).show();
