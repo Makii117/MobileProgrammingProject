@@ -23,8 +23,12 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.maki.happyhour.R;
 import com.maki.happyhour.models.UserModel;
@@ -49,7 +53,7 @@ public class FriendsFragment extends Fragment {
     private RecyclerView friendList;
     private FirestoreRecyclerAdapter adapter;
     private View mainView;
-
+    FirebaseAuth mAuth;
 
     final protected String FCM_API = "https://fcm.googleapis.com/fcm/send";
     final protected String serverKey = "key=" + "AAAA5p2qHhU:APA91bHuPVoulSKI5IOQGGMRwD96kfmgR--FgeM1A61Sfjw8YJJjLVMprGgB_AACQw1S-R369m-Sfjhr2eiDBNL0UWMe9HMGKV69L26JLBkNvqdmBpfpapgh9ItaLBrZeHehui1tnjwj\t\n";
@@ -66,14 +70,28 @@ public class FriendsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.friendslist,container,false);
         Geocoder geocoder = new Geocoder(getActivity(), Locale.ENGLISH);
-
+        mAuth=FirebaseAuth.getInstance();
         firebaseFirestore=FirebaseFirestore.getInstance();
         friendList=mainView.findViewById(R.id.friends_list);
 
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
 
+                        // Get new FCM registration token
+                        String token = task.getResult();
 
-
-
+                        // Log and toast
+                        String msg = getString(Integer.parseInt(token));
+                        Log.d(TAG, msg);
+                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
         //Query
         Query query =firebaseFirestore.collection("users");
@@ -137,13 +155,12 @@ public class FriendsFragment extends Fragment {
 
 
                         TOPIC = "/topics/userABC"; //topic must match with what the receiver subscribed to
-                        NOTIFICATION_TITLE = String.valueOf(userModel.getName());
-                        NOTIFICATION_MESSAGE = "PINGED YOU";
+                        NOTIFICATION_TITLE = String.valueOf(mAuth.getCurrentUser().getDisplayName());
+                        NOTIFICATION_MESSAGE = "Pinged you";
 
                         JSONObject notification = new JSONObject();
                         JSONObject notificationBody = new JSONObject();
-                        Log.d("JSONBOI", String.valueOf(notificationBody));
-                        Log.d("JSONBOI1", String.valueOf(notification));
+
 
                         try {
                             notificationBody.put("title", NOTIFICATION_TITLE);
@@ -151,6 +168,8 @@ public class FriendsFragment extends Fragment {
 
                             notification.put("to", TOPIC);
                             notification.put("data", notificationBody);
+                            Log.d("JSONBOI", String.valueOf(notificationBody));
+                            Log.d("JSONBOI1", String.valueOf(notification));
                         } catch (JSONException e) {
                             Log.e(TAG, "onCreate: " + e.getMessage() );
                         }

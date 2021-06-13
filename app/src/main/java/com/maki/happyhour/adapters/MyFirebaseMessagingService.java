@@ -30,11 +30,14 @@ public final class MyFirebaseMessagingService extends FirebaseMessagingService {
     private final String ADMIN_CHANNEL_ID ="admin_channel";
 
 
+
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);
         Log.d("NEW_TOKEN",s);
         FirebaseMessaging.getInstance().subscribeToTopic(SUBSCRIBE_TO);
+
+
     }
 
     @Override
