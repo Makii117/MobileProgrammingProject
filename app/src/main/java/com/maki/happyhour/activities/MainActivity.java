@@ -75,9 +75,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_map:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapFragment()).commit();
                 break;
-            case R.id.nav_nearMe:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NearMeFragment()).commit();
-                break;
                 case R.id.nav_friends:
                   getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FriendsFragment()).commit();
                 break;
@@ -113,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                    }
                                });
 
-                                if (location != null) {
+                                if (location == null) {
                                     Toast.makeText(MainActivity.this, "Error, location null", Toast.LENGTH_SHORT).show();
                                 }
                           }
